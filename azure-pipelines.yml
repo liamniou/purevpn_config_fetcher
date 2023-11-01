@@ -1,0 +1,26 @@
+trigger:
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: GoTool@0
+  inputs:
+    version: '1.21.3'
+
+- task: Go@0
+  inputs:
+    command: 'custom'
+    customCommand: 'mod'
+    arguments: 'download'
+  displayName: Download go dependencies
+
+- task: Bash@3
+  inputs:
+    filePath: build-all-archs.sh
+  displayName: Build apps
+
+- publish: build
+  name: build
+  displayName: Publish build artifacts
