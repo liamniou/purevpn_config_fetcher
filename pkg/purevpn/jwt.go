@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"dev.azure.com/Rikpat/_git/purevpn_wg/pkg/util"
+	"dev.azure.com/Rikpat/Home/_git/purevpn_wg/pkg/util"
 	"github.com/manifoldco/promptui"
 )
 

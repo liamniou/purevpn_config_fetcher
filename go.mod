@@ -1,4 +1,4 @@
-module dev.azure.com/Rikpat/_git/purevpn_wg
+module dev.azure.com/Rikpat/Home/_git/purevpn_wg
 
 go 1.21.3
 

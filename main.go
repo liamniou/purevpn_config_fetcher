@@ -1,8 +1,8 @@
 package main
 
 import (
-	purevpn_wg "dev.azure.com/Rikpat/_git/purevpn_wg/cmd"
-	"dev.azure.com/Rikpat/_git/purevpn_wg/pkg/util"
+	purevpn_wg "dev.azure.com/Rikpat/Home/_git/purevpn_wg/cmd"
+	"dev.azure.com/Rikpat/Home/_git/purevpn_wg/pkg/util"
 	"github.com/alecthomas/kong"
 	kongyaml "github.com/alecthomas/kong-yaml"
 )

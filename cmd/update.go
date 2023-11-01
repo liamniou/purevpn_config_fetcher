@@ -1,9 +1,9 @@
 package purevpn_wg
 
 import (
-	"dev.azure.com/Rikpat/_git/purevpn_wg/pkg/purevpn"
-	"dev.azure.com/Rikpat/_git/purevpn_wg/pkg/util"
-	"dev.azure.com/Rikpat/_git/purevpn_wg/pkg/wireguard"
+	"dev.azure.com/Rikpat/Home/_git/purevpn_wg/pkg/purevpn"
+	"dev.azure.com/Rikpat/Home/_git/purevpn_wg/pkg/util"
+	"dev.azure.com/Rikpat/Home/_git/purevpn_wg/pkg/wireguard"
 )
 
 type UpdateCmd struct {

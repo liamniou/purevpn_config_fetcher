@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-package_name="purevpn_wg"
+package_name="build/purevpn_wg"
 platforms=("windows/amd64" "windows/386" "darwin/amd64" "linux/amd64" "linux/386")
 for platform in "${platforms[@]}"
 do
@@ -11,7 +11,7 @@ do
         output_name+='.exe'
     fi
 
-    env GOOS=$GOOS GOARCH=$GOARCH go build -o $output_name dev.azure.com/Rikpat/_git/purevpn_wg
+    env GOOS=$GOOS GOARCH=$GOARCH go build -o $output_name dev.azure.com/Rikpat/Home/_git/purevpn_wg
     if [ $? -ne 0 ]; then
         echo 'An error has occurred! Aborting the script execution...'
         exit 1
