@@ -3,8 +3,8 @@ package purevpn_wg
 import (
 	"fmt"
 
-	"dev.azure.com/Rikpat/Home/_git/purevpn_wg/pkg/purevpn"
-	"dev.azure.com/Rikpat/Home/_git/purevpn_wg/pkg/util"
+	"github.com/Rikpat/purevpn_wg/pkg/purevpn"
+	"github.com/Rikpat/purevpn_wg/pkg/util"
 )
 
 type LoginCmd struct {

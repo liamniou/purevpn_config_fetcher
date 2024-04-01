@@ -9,4 +9,5 @@ var CLI struct {
 
 	Login  LoginCmd  `cmd:"" help:"Login and store cookies."`
 	Update UpdateCmd `cmd:"" help:"Updates wireguard config file."`
+	Full   FullCmd   `cmd:"" help:"Runs full process (login, wireguard update) without creating cookies file and writing config (for example for docker run)"`
 }

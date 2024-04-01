@@ -10,23 +10,23 @@ import (
 const CONFIG_FILE = "config.yml"
 
 type SubscriptionAuth struct {
-	Username string `yaml:"username"`
-	Password string `yaml:"password"`
+	Username string `flag:"" yaml:"username" env:"ID" help:"PureVPN subscription ID"`
+	Password string `flag:"" yaml:"password" env:"PASSWORD" help:"PureVPN subscription password (not necessary)"`
 }
 
 type Server struct {
-	Country string `yaml:"country"`
-	City    string `yaml:"city"`
+	Country string `flag:"" yaml:"country" env:"COUNTRY" help:"PureVPN server country (example: DE)."`
+	City    string `flag:"" yaml:"city" env:"CITY" help:"PureVPN server city (example: 2762)."`
 }
 
 type Config struct {
-	Username      string  `yaml:"username"`
-	Password      string  `yaml:"password"`
-	UUID          string  `yaml:"uuid"`
-	Server        *Server `yaml:"server"`
-	Subscription  *SubscriptionAuth
-	Device        string `yaml:"device"`
-	WireguardFile string `yaml:"wireguardFile"`
+	Username      string            `flag:"" yaml:"username" env:"USERNAME" help:"PureVPN username (email)."`
+	Password      string            `flag:"" yaml:"password" env:"PASSWORD" help:"PureVPN password."`
+	UUID          string            `yaml:"uuid" hidden:""`
+	Server        *Server           `yaml:"server" embed:"" prefix:"server." envprefix:"SERVER_"`
+	Subscription  *SubscriptionAuth `embed:"" prefix:"subscription." envprefix:"SUBSCRIPTION_"`
+	Device        string            `yaml:"device" default:"linux"`
+	WireguardFile string            `flag:"" yaml:"wireguardFile" env:"WIREGUARD_FILE" default:"wg0.conf"`
 }
 
 func (sub *SubscriptionAuth) GetEncryptPassword(page *rod.Page, token string) error {

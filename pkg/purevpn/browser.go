@@ -5,8 +5,8 @@ import (
 	"net/url"
 	"time"
 
-	"dev.azure.com/Rikpat/Home/_git/purevpn_wg/pkg/util"
-	"dev.azure.com/Rikpat/Home/_git/purevpn_wg/pkg/wireguard"
+	"github.com/Rikpat/purevpn_wg/pkg/util"
+	"github.com/Rikpat/purevpn_wg/pkg/wireguard"
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/input"
 	"github.com/go-rod/rod/lib/launcher"

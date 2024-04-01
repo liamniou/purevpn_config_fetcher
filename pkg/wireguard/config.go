@@ -4,7 +4,7 @@ import (
 	"errors"
 	"os"
 
-	"dev.azure.com/Rikpat/Home/_git/purevpn_wg/pkg/util"
+	"github.com/Rikpat/purevpn_wg/pkg/util"
 	"gopkg.in/ini.v1"
 )
 
@@ -21,11 +21,7 @@ type Peer struct {
 	PublicKey, AllowedIPs, Endpoint, PersistentKeepalive string
 }
 
-func UpdateConfig(newConfig []byte) error {
-	config, err := util.ReadConfig()
-	if err != nil {
-		return err
-	}
+func UpdateConfig(newConfig []byte, config *util.Config) error {
 	if _, err := os.Stat(config.WireguardFile); errors.Is(err, os.ErrNotExist) {
 		wgConfFile, err := ini.Load(newConfig)
 		if err != nil {
@@ -36,7 +32,7 @@ func UpdateConfig(newConfig []byte) error {
 	}
 	wgConf := new(WireguardConfig)
 
-	err = ini.MapTo(wgConf, newConfig)
+	err := ini.MapTo(wgConf, newConfig)
 	if err != nil {
 		return err
 	}
