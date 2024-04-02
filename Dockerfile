@@ -3,7 +3,7 @@ RUN apk add --no-cache \
       chromium \
       chromium-swiftshader
 
-COPY dist/purevpnwg-${BUILDOS}-${BUILDARCH} /bin/purevpnwg
+COPY --chmod="111" ./purevpnwg-${TARGETOS}-${TARGETARCH} /bin/purevpnwg
 
 ENV PUREVPN_USERNAME=""
 ENV PUREVPN_PASSWORD=""
