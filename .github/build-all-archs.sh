@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 package_name="dist/purevpnwg"
-for platform in "${platforms[@]}"
-do
+for platform in $BUILD_ARCHS; do
     platform_split=(${platform//\// })
     GOOS=${platform_split[0]}
     GOARCH=${platform_split[1]}
