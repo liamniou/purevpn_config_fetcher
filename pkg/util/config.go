@@ -25,7 +25,7 @@ type Config struct {
 	UUID          string            `yaml:"uuid" hidden:""`
 	Server        *Server           `yaml:"server" embed:"" prefix:"server." envprefix:"SERVER_"`
 	Subscription  *SubscriptionAuth `embed:"" prefix:"subscription." envprefix:"SUBSCRIPTION_"`
-	Device        string            `yaml:"device" default:"linux"`
+	Device        string            `yaml:"device" env:"DEVICE" default:"linux"`
 	WireguardFile string            `flag:"" yaml:"wireguardFile" env:"WIREGUARD_FILE" default:"wg0.conf"`
 }
 

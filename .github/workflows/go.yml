@@ -44,8 +44,3 @@ jobs:
         body: ${{ steps.tag_version.outputs.changelog }}
         artifacts: "dist/*"
       if: github.event_name != 'pull_request'
-
-    - name: Upload dist to artifact
-      uses: actions/upload-artifact@v4.3.1
-      with:
-        path: "dist/*"
