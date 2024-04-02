@@ -4,7 +4,7 @@ import (
 	"errors"
 	"os"
 
-	"github.com/Rikpat/purevpn_wg/pkg/util"
+	"github.com/Rikpat/purevpnwg/pkg/util"
 	"gopkg.in/ini.v1"
 )
 

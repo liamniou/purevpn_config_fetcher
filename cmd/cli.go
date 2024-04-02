@@ -1,4 +1,4 @@
-package purevpn_wg
+package purevpnwg
 
 type Context struct {
 	Debug bool

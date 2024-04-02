@@ -5,8 +5,8 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/Rikpat/purevpn_wg/pkg/util"
-	"github.com/Rikpat/purevpn_wg/pkg/wireguard"
+	"github.com/Rikpat/purevpnwg/pkg/util"
+	"github.com/Rikpat/purevpnwg/pkg/wireguard"
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/input"
 	"github.com/go-rod/rod/lib/launcher"
@@ -43,7 +43,7 @@ func InitPage() (*rod.Page, error) {
 		return nil, err
 	}
 	if util.AreCookiesExpired(cookies) {
-		return nil, fmt.Errorf("cookies are expired, run purevpn_wg login")
+		return nil, fmt.Errorf("cookies are expired, run purevpnwg login")
 	}
 	browser := rod.New().Timeout(time.Minute).ControlURL(_LAUNCHER).MustConnect().MustSetCookies(cookies...)
 

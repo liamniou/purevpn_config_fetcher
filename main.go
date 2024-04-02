@@ -1,15 +1,15 @@
 package main
 
 import (
-	purevpn_wg "github.com/Rikpat/purevpn_wg/cmd"
-	"github.com/Rikpat/purevpn_wg/pkg/util"
+	purevpnwg "github.com/Rikpat/purevpnwg/cmd"
+	"github.com/Rikpat/purevpnwg/pkg/util"
 	"github.com/alecthomas/kong"
 	kongyaml "github.com/alecthomas/kong-yaml"
 )
 
 func main() {
-	ctx := kong.Parse(&purevpn_wg.CLI, kong.Configuration(kongyaml.Loader, "/etc/purevpn_wg/config.yml", "~/.purevpn_wg.yml", util.CONFIG_FILE))
+	ctx := kong.Parse(&purevpnwg.CLI, kong.Configuration(kongyaml.Loader, "/etc/purevpnwg/config.yml", "~/.purevpnwg.yml", util.CONFIG_FILE))
 	// Call the Run() method of the selected parsed command.
-	err := ctx.Run(&purevpn_wg.Context{Debug: purevpn_wg.CLI.Debug})
+	err := ctx.Run(&purevpnwg.Context{Debug: purevpnwg.CLI.Debug})
 	ctx.FatalIfErrorf(err)
 }

@@ -1,11 +1,11 @@
-package purevpn_wg
+package purevpnwg
 
 import (
 	"fmt"
 
-	"github.com/Rikpat/purevpn_wg/pkg/purevpn"
-	"github.com/Rikpat/purevpn_wg/pkg/util"
-	"github.com/Rikpat/purevpn_wg/pkg/wireguard"
+	"github.com/Rikpat/purevpnwg/pkg/purevpn"
+	"github.com/Rikpat/purevpnwg/pkg/util"
+	"github.com/Rikpat/purevpnwg/pkg/wireguard"
 )
 
 type FullCmd struct {

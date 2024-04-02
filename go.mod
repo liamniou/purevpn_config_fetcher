@@ -1,4 +1,4 @@
-module github.com/Rikpat/purevpn_wg
+module github.com/Rikpat/purevpnwg
 
 go 1.22.1
 
