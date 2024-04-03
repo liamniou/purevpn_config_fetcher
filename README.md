@@ -1,3 +1,4 @@
+[![Build and release go app](https://github.com/Rikpat/purevpnwg/actions/workflows/go.yml/badge.svg?branch=main)](https://github.com/Rikpat/purevpnwg/actions/workflows/go.yml) [![Build and publish docker image](https://github.com/Rikpat/purevpnwg/actions/workflows/docker.yml/badge.svg?event=release)](https://github.com/Rikpat/purevpnwg/actions/workflows/docker.yml)
 # PureVPN WireGuard fetcher
 
 A tool written in go serving to automatically fetch WireGuard configuration from PureVPN, countering the 30 minute policy they have.
