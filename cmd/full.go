@@ -9,11 +9,10 @@ import (
 )
 
 type FullCmd struct {
-	Config *util.Config `embed:"" envprefix:"PUREVPN_"`
 }
 
 func (r *FullCmd) Run(ctx *Context) error {
-	page, cookies := purevpn.Login(r.Config.Username, r.Config.Password)
+	page, cookies := purevpn.Login(ctx.Config.Username, ctx.Config.Password)
 	defer page.MustClose()
 
 	if ctx.Debug {
@@ -34,33 +33,34 @@ func (r *FullCmd) Run(ctx *Context) error {
 		fmt.Println("Successfully parsed user data")
 	}
 
-	if r.Config.Subscription.Username == "" {
-		if r.Config.Subscription, err = userData.SelectSubscription(); err != nil {
+	if ctx.Config.Subscription.Username == "" {
+		if ctx.Config.Subscription, err = userData.SelectSubscription(); err != nil {
 			return err
 		}
 	}
 
 	if ctx.Debug {
-		fmt.Printf("Selected subscription %v\n", r.Config.Subscription.Username)
+		fmt.Printf("Selected subscription %v\n", ctx.Config.Subscription.Username)
 	}
 
-	if err := r.Config.Subscription.GetEncryptPassword(page, token[0].Value); err != nil {
+	if err := ctx.Config.Subscription.GetEncryptPassword(page, token[0].Value); err != nil {
 		return err
 	}
 
 	if ctx.Debug {
 		fmt.Println("Successfully got subscription password")
+		fmt.Printf("ctx.Config: %v\n", ctx.Config)
 	}
 
-	server, err := purevpn.GetWireguardServer(page, r.Config, token[0].Value)
+	server, err := purevpn.GetWireguardServer(page, ctx.Config, token[0].Value)
 
 	if err == nil {
 		if ctx.Debug {
 			fmt.Printf("Got wireguard server: %v\n", server)
 		}
-		err = wireguard.UpdateConfig([]byte(server), r.Config)
+		err = wireguard.UpdateConfig([]byte(server), ctx.Config)
 		if ctx.Debug && err == nil {
-			fmt.Printf("Created wireguard file at %v\n", r.Config.WireguardFile)
+			fmt.Printf("Created wireguard file at %v\n", ctx.Config.WireguardFile)
 		}
 	}
 	return err

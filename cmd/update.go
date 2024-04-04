@@ -2,7 +2,6 @@ package purevpnwg
 
 import (
 	"github.com/Rikpat/purevpnwg/pkg/purevpn"
-	"github.com/Rikpat/purevpnwg/pkg/util"
 	"github.com/Rikpat/purevpnwg/pkg/wireguard"
 )
 
@@ -19,19 +18,15 @@ func (r *UpdateCmd) Run(ctx *Context) error {
 	}
 	defer page.MustClose()
 
-	config, err := util.ReadConfig()
-	if err != nil {
-		return err
-	}
-	token, err := purevpn.GetToken(page, config.UUID)
+	token, err := purevpn.GetToken(page, ctx.Config.UUID)
 
 	if err != nil {
 		return err
 	}
 
-	server, err := purevpn.GetWireguardServer(page, config, token)
+	server, err := purevpn.GetWireguardServer(page, ctx.Config, token)
 	if err == nil {
-		err = wireguard.UpdateConfig([]byte(server), config)
+		err = wireguard.UpdateConfig([]byte(server), ctx.Config)
 	}
 	return err
 }

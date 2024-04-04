@@ -14,19 +14,20 @@ type SubscriptionAuth struct {
 	Password string `flag:"" yaml:"password" env:"PASSWORD" help:"PureVPN subscription password (not necessary)"`
 }
 
-type Server struct {
+type ServerConfig struct {
 	Country string `flag:"" yaml:"country" env:"COUNTRY" help:"PureVPN server country (example: DE)."`
 	City    string `flag:"" yaml:"city" env:"CITY" help:"PureVPN server city (example: 2762)."`
 }
 
 type Config struct {
-	Username      string            `flag:"" yaml:"username" env:"USERNAME" help:"PureVPN username (email)."`
-	Password      string            `flag:"" yaml:"password" env:"PASSWORD" help:"PureVPN password."`
-	UUID          string            `yaml:"uuid" hidden:""`
-	Server        *Server           `yaml:"server" embed:"" prefix:"server." envprefix:"SERVER_"`
+	Username      string            `flag:"" yaml:"username" required:"" env:"USERNAME" help:"PureVPN username (email)."`
+	Password      string            `flag:"" yaml:"password" required:"" env:"PASSWORD" help:"PureVPN password."`
+	UUID          string            `yaml:"uuid" kong:"-"`
+	Server        *ServerConfig     `yaml:"server" embed:"" prefix:"server." envprefix:"SERVER_"`
 	Subscription  *SubscriptionAuth `embed:"" prefix:"subscription." envprefix:"SUBSCRIPTION_"`
 	Device        string            `yaml:"device" env:"DEVICE" default:"linux"`
 	WireguardFile string            `flag:"" yaml:"wireguardFile" env:"WIREGUARD_FILE" default:"wg0.conf"`
+	ResolveIP     bool              `flag:"" yaml:"resolveIP" env:"RESOLVE_IP" default:"false" help:"Resolves hostname to IP (for use with gluetun)"`
 }
 
 func (sub *SubscriptionAuth) GetEncryptPassword(page *rod.Page, token string) error {

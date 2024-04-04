@@ -2,7 +2,9 @@ package wireguard
 
 import (
 	"errors"
+	"net"
 	"os"
+	"strings"
 
 	"github.com/Rikpat/purevpnwg/pkg/util"
 	"gopkg.in/ini.v1"
@@ -21,21 +23,32 @@ type Peer struct {
 	PublicKey, AllowedIPs, Endpoint, PersistentKeepalive string
 }
 
-func UpdateConfig(newConfig []byte, config *util.Config) error {
-	if _, err := os.Stat(config.WireguardFile); errors.Is(err, os.ErrNotExist) {
-		wgConfFile, err := ini.Load(newConfig)
-		if err != nil {
-			return err
-		}
-		return wgConfFile.SaveTo(config.WireguardFile)
-	} else if err != nil {
-		return err
-	}
+func resolveIpFromHostname(conf *WireguardConfig) {
+	// [0]: endpoint [1]: port
+	endpointSlice := strings.Split(conf.Peer.Endpoint, ":")
+	ips, _ := net.LookupIP(endpointSlice[0])
+	conf.Peer.Endpoint = ips[0].To4().String() + ":" + endpointSlice[1]
+}
 
+func UpdateConfig(newConfig []byte, config *util.Config) error {
 	wgConf := new(WireguardConfig)
 
 	err := ini.MapTo(wgConf, newConfig)
 	if err != nil {
+		return err
+	}
+
+	if config.ResolveIP {
+		resolveIpFromHostname(wgConf)
+	}
+
+	if _, err := os.Stat(config.WireguardFile); errors.Is(err, os.ErrNotExist) {
+		wgConfFile := ini.Empty()
+		if err := wgConfFile.ReflectFrom(wgConf); err != nil {
+			return err
+		}
+		return wgConfFile.SaveTo(config.WireguardFile)
+	} else if err != nil {
 		return err
 	}
 

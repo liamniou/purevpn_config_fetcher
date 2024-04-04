@@ -117,7 +117,7 @@ func GetWireguardServer(page *rod.Page, config *util.Config, token string) (stri
 			}
 			const json = await res.json()
 			if (!json.status) {
-				throw Error(json)
+				throw Error(JSON.stringify(json))
 			}
 			return json.body[0].wireguard_configuration.replace("{clientPrivateKey}", privateKey)
 	}`, params.Encode(), "Bearer "+token, privateKey)

@@ -8,12 +8,10 @@ import (
 )
 
 type LoginCmd struct {
-	Username string `flag:"" help:"PureVPN username (email)."`
-	Password string `flag:"" help:"PureVPN password."`
 }
 
 func (r *LoginCmd) Run(ctx *Context) error {
-	page, cookies := purevpn.Login(r.Username, r.Password)
+	page, cookies := purevpn.Login(ctx.Config.Username, ctx.Config.Password)
 	defer page.MustClose()
 
 	token := util.FilterCookies(cookies, "fa_token")
