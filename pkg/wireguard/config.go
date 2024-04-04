@@ -27,8 +27,7 @@ func UpdateConfig(newConfig []byte, config *util.Config) error {
 		if err != nil {
 			return err
 		}
-		wgConfFile.SaveTo(config.WireguardFile)
-		return nil
+		return wgConfFile.SaveTo(config.WireguardFile)
 	} else if err != nil {
 		return err
 	}
