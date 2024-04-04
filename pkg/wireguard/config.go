@@ -29,7 +29,10 @@ func UpdateConfig(newConfig []byte, config *util.Config) error {
 		}
 		wgConfFile.SaveTo(config.WireguardFile)
 		return nil
+	} else if err != nil {
+		return err
 	}
+
 	wgConf := new(WireguardConfig)
 
 	err := ini.MapTo(wgConf, newConfig)
