@@ -73,13 +73,13 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
-        outputs: type=docker,dest=/tmp/docker.tar
+        outputs: type=oci,dest=/tmp/oci.tar
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: docker
-        path: /tmp/docker.tar
+        path: /tmp/oci.tar
     outputs:
       tags: ${{ steps.meta.outputs.tags }}
 
@@ -132,7 +132,7 @@ jobs:
         
     - name: Tag and push docker image
       run: |
-        docker load --input /tmp/docker.tar
+        docker load --input /tmp/oci.tar
         IFS=. read -r major minor patch <<< $GIT_TAG
         dockerImage = "${DOCKER_TAG%%:sha-*}"
         for tag in $major "${major}-${minor}" "${major}-${minor}-${patch}"; do
