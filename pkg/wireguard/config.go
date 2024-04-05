@@ -59,7 +59,7 @@ func UpdateConfig(newConfig []byte, config *util.Config) error {
 	iface := wgConfFile.Section("Interface")
 	iface.Key("Address").SetValue(wgConf.Interface.Address)
 	iface.Key("PrivateKey").SetValue(wgConf.Interface.PrivateKey)
-	// iface.Key("DNS").SetValue(wgConf.Interface.DNS)
+	iface.Key("DNS").SetValue(wgConf.Interface.DNS)
 
 	peer := wgConfFile.Section("Peer")
 	peer.Key("PublicKey").SetValue(wgConf.Peer.PublicKey)
