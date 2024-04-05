@@ -15,8 +15,8 @@ type SubscriptionAuth struct {
 }
 
 type ServerConfig struct {
-	Country string `flag:"" yaml:"country" env:"COUNTRY" help:"PureVPN server country (example: DE)."`
-	City    string `flag:"" yaml:"city" env:"CITY" help:"PureVPN server city (example: 2762)."`
+	Country string `flag:"" yaml:"country" env:"COUNTRY" help:"PureVPN server country (example: US)."`
+	City    string `flag:"" yaml:"city" env:"CITY" help:"PureVPN server city (example: 8778 for New York)."`
 }
 
 type Config struct {
@@ -28,7 +28,6 @@ type Config struct {
 	Subscription  *SubscriptionAuth `embed:"" prefix:"subscription." envprefix:"SUBSCRIPTION_"`
 	Device        string            `yaml:"device" env:"DEVICE" default:"linux"`
 	WireguardFile string            `flag:"" yaml:"wireguardFile" env:"WIREGUARD_FILE" default:"wg0.conf"`
-	ResolveIP     bool              `flag:"" yaml:"resolveIP" env:"RESOLVE_IP" default:"false" help:"Resolves hostname to IP (for use with gluetun)"`
 }
 
 func (sub *SubscriptionAuth) GetEncryptPassword(page *rod.Page, token string) error {

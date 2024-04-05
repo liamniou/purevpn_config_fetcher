@@ -58,7 +58,9 @@ func (r *FullCmd) Run(ctx *Context) error {
 		if ctx.Config.Debug {
 			fmt.Printf("Got wireguard server: %v\n", server)
 		}
+
 		err = wireguard.UpdateConfig([]byte(server), ctx.Config)
+
 		if ctx.Config.Debug && err == nil {
 			fmt.Printf("Created wireguard file at %v\n", ctx.Config.WireguardFile)
 		}
