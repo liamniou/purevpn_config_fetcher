@@ -35,11 +35,23 @@ jobs:
       with:
         name: dist
         path: dist
+
+    - name: Test Build Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        platforms: linux/arm64, linux/amd64
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
         
   docker:
-    name: Build Docker
+    if: github.event_name != 'pull_request'
+    name: release
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
     steps:
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
@@ -48,6 +60,15 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v3
 
+    - uses: actions/checkout@v4
+
+    # Has to be in front of docker, assuming docker build doesn't fail
+    - name: Bump version and push tag
+      id: tag_version
+      uses: mathieudutour/github-tag-action@v6.2
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Docker meta
       id: meta
       uses: docker/metadata-action@v5
@@ -55,59 +76,17 @@ jobs:
         images: |
           ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         tags: |
-          type=sha,format=long
-
-    - uses: actions/checkout@v4
+          type=sha
+          type=semver,value=${{ steps.tag_version.outputs.new_tag }}pattern={{version}}
+          type=semver,value=${{ steps.tag_version.outputs.new_tag }}pattern={{major}}.{{minor}}
+          type=semver,value=${{ steps.tag_version.outputs.new_tag }}pattern={{major}}
 
     - name: Download a Build Artifact
       uses: actions/download-artifact@v4.1.4
       with:
         name: dist
-    
-    - name: Build Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        platforms: linux/arm64, linux/amd64
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-        outputs: type=oci,dest=/tmp/oci.tar
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: docker
-        path: /tmp/oci.tar
-    outputs:
-      tags: ${{ steps.meta.outputs.tags }}
-
-  release:
-    name: Create github release and push image
-    if: github.event_name != 'pull_request'
-    needs: 
-    - build
-    - docker
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      packages: write
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Bump version and push tag
-      id: tag_version
-      uses: mathieudutour/github-tag-action@v6.2
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Download a Build Artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: dist
         path: dist
-
+    
     - name: Create a GitHub release
       uses: ncipollo/release-action@v1
       with:
@@ -117,28 +96,21 @@ jobs:
         body: ${{ steps.tag_version.outputs.changelog }}
         artifacts: "dist/*"
 
-    - name: Download a Build Artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: docker
-        path: /tmp
-
     - name: Login to ${{ env.REGISTRY }}
       uses: docker/login-action@v3
       with:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-        
-    - name: Tag and push docker image
-      run: |
-        docker load --input /tmp/oci.tar
-        IFS=. read -r major minor patch <<< $GIT_TAG
-        dockerImage = "${DOCKER_TAG%%:sha-*}"
-        for tag in $major "${major}-${minor}" "${major}-${minor}-${patch}"; do
-            docker tag $DOCKER_TAG $dockerImage:$tag
-        done
-        docker push --all-tags $DOCKER_TAG
-      env:
-        DOCKER_TAG: ${{ needs.docker.outputs.tags }}
-        GIT_TAG: ${{ steps.tag_version.outputs.new_tag }}
+
+    # Should be fully cached from build job
+    - name: Build and Push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        platforms: linux/arm64, linux/amd64
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max

@@ -5,7 +5,7 @@ RUN apk add --no-cache \
 
 ARG TARGETOS TARGETARCH
 
-COPY --chmod="111" ./purevpnwg-${TARGETOS}-${TARGETARCH} /bin/purevpnwg
+COPY --chmod="111" dist/purevpnwg-${TARGETOS}-${TARGETARCH} /bin/purevpnwg
 
 ENV PUREVPN_USERNAME=""
 ENV PUREVPN_PASSWORD=""
