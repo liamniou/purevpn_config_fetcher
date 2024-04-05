@@ -82,12 +82,13 @@ jobs:
         path: /tmp/docker.tar
     outputs:
       tags: ${{ steps.meta.outputs.tags }}
+
   release:
-    name: Build Docker
+    name: Create github release and push image
     if: github.event_name != 'pull_request'
     needs: 
     - build
-    - build-docker
+    - docker
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -138,3 +139,6 @@ jobs:
             docker tag $DOCKER_TAG $dockerImage:$tag
         done
         docker push --all-tags $DOCKER_TAG
+      env:
+        DOCKER_TAG: ${{ needs.docker.outputs.tags }}
+        GIT_TAG: ${{ steps.tag_version.outputs.new_tag }}
