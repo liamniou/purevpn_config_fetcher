@@ -50,7 +50,7 @@ username: email@example.com
 password: <password>
 server: # Set to a server you want to connect to
   country: US 
-  city: 2762
+  city: 7040
 subscription:
   username: purevpn********* # If you have multiple subscriptions in your account
 wireguardFile: wg0-p2p.conf # If you want to have a different file location
