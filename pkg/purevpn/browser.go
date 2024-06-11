@@ -100,6 +100,10 @@ func GetWireguardServer(page *rod.Page, config *util.Config, token string) (stri
 	params.Add("sClientPublicKey", publicKey)
 	params.Add("iCityId", config.Server.City)
 
+	if config.Debug {
+		fmt.Printf("Requesting wireguard server with params: %v\n", params)
+	}
+
 	page.MustNavigate(_BASE_URL).MustWaitNavigation()
 	res, err := page.Eval(`
 		async (body, authorization, privateKey) => {

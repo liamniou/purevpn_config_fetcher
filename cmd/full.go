@@ -49,7 +49,6 @@ func (r *FullCmd) Run(ctx *Context) error {
 
 	if ctx.Config.Debug {
 		fmt.Println("Successfully got subscription password")
-		fmt.Printf("ctx.Config: %v\n", ctx.Config)
 	}
 
 	server, err := purevpn.GetWireguardServer(page, ctx.Config, token[0].Value)
