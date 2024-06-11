@@ -39,8 +39,7 @@ Env variables:
 | PUREVPN_DEVICE                | Platform, used in call for wireguard config         |                                                     | linux                                               | device                |
 | PUREVPN_WIREGUARD_FILE        | Output file to generate                             |                                                     | wg0.conf (/out/wg0.conf in docker)                  | wireguardFile         |
 
-
-## Running locally
+## Running locally
 
 Create config.yml file or environment variables with values as described in table in docker section. At minimum you have to specify *username*, *password*, *server.country* and *server.city*. Then run `purevpnwg full`.
 
